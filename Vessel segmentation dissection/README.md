@@ -1,0 +1,11 @@
+# Blood Vessel Segmentation – Research Code Repository
+
+This repository contains the code, experiments, and model configurations developed for the study currently under peer review, which investigates the contribution of **shape**, **texture**, and **receptive field** to the performance of Convolutional Neural Networks (CNNs) in **blood vessel segmentation**.
+
+The aim of this work is to understand how CNNs interpret vascular patterns, addressing challenges related to **interpretability**, **clinical reliability**, and **architectural design choices** for segmentation models used in medical imaging.
+
+---
+
+## 🧠 Research Summary
+
+Blood vessel segmentation in medical images is a crucial step for the diagnosis of a wide range of pathologies, but it presents unique challenges due to the complexity and variability of the structures involved. Moreover, the lack of interpretability of Convolutional Neural Networks (CNNs) represents a significant barrier to clinical adoption, as it complicates model debugging, limits design improvements, and can reduce diagnostic confidence. In this study, we conducted systematic experiments to separately evaluate the contributions of shape, texture, and receptive field to the performance of CNNs in blood vessel segmentation. First, to assess the role of texture and pixel intensity, these features were selectively removed from image patches using pixel shuffling and normalization. Next, to isolate the influence of shape, segmentation models were trained using only the vessels’ outer contours or centerlines as input, thereby removing internal texture information. Finally, we investigated the amount of context required for robust segmentation by systematically varying the network’s theoretical receptive field. We found that, although pixel intensity is more relevant than vessel texture, CNNs can still maintain high performance even in the absence of both features. In addition, the networks are not able to easily extrapolate the full vessel shape when provided only with contours or centerlines as input. Finally, we observed that the effective receptive field used by the networks is approximately 20 pixels in the datasets employed, although global information can lead to a slight improvement in accuracy for fundus images.
