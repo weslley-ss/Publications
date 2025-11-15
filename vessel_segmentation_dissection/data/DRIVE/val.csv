@@ -1,0 +1,5 @@
+im_paths,gt_paths,mask_paths
+images/37_training.tif,manual/37_manual1.gif,mask/37_mask.gif
+images/38_training.tif,manual/38_manual1.gif,mask/38_mask.gif
+images/39_training.tif,manual/39_manual1.gif,mask/39_mask.gif
+images/40_training.tif,manual/40_manual1.gif,mask/40_mask.gif
