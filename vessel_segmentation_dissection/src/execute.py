@@ -117,8 +117,45 @@ def generate_models_configurations(base_k, base_dil, base_res, k_vals, dil_vals,
         all_configs.append((base_k, base_dil, base_res, downs))
     return all_configs
 
-def main():
+def ciclo_treino_transform(configs:list, seed:int = 0, data="VessMAP", model="dic_unet", transform=None, variation=None):
 
+    for index, config in enumerate(configs):
+        # PATHS CONFIGURATION
+        config_id = f"config_{index:03d}"
+        transform_dir = "baseline" if transform is None else transform
+        variation_dir = "baseline" if transform is None else transform
+        base_path = f"../experiments/{data}/{transform_dir}/{variation_dir}/{config_id}"
+        os.makedirs(base_path, exist_ok=True)
+        
+        # DATASET CONFIGURATION
+        csv_train = f"../data/{data}/train.csv"
+        im_size = 256 if data == "VessMAP" else 512
+        in_c = 1 if data == "VessMAP" else 3
+        
+        # MODEL CONFIGURATION
+        dic_kernel = str(config)
+        name = "_wnet" if model == "wnet" else ""
+        model_id = transform_dir + name
+        
+        # TRAINING MODELS
+        cmd = f"""
+        python train.py \
+            --csv_train {csv_train} \
+            --seed {seed} \
+            --save_path {base_path} \
+            --model_id {model_id} \
+            --im_size {im_size} \
+            --in_c {in_c} \
+            --experiment {base_path} \
+            --model_name {model} \
+            --kernels "{dic_kernel}" \
+            --transform "{transform}" \
+            --variation "{variation}" \
+            --epochs 2500
+        """
+        os.system(cmd)
+def main():
+    # LAYERS CONFIGURATION
     n_layers = 10 # only convolutional layers
     base_k = [3]*n_layers
     k_vals = [1, 5, 7]
@@ -127,9 +164,11 @@ def main():
     dil_vals = [2, 3, 7]
 
     base_res = [1]*5 
-    res_vals = [3, 5, 7]
+    res_vals = [3]
 
     configs = generate_models_configurations(base_k, base_dil, base_res, k_vals, dil_vals, res_vals, return_base = False)
-    print(configs)
+    
+    ciclo_treino_transform(configs, seed=2, data="VessMAP", model="dic_unet", transform="skeleton", variation ="ratio_1")
+
 
 main()
