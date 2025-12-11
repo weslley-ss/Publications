@@ -198,6 +198,7 @@ def main(arg_dict=None):
     # gather parser parameters
     experiment = args.experiment
     transform = args.transform
+    variation = args.variation
     model_id = args.model_id
     kernels = args.kernels
     model_name = args.model_name
@@ -245,7 +246,7 @@ def main(arg_dict=None):
     #print(f"* Creating Dataloaders, batch size = {bs}, workers = {args.num_workers}")
     train_loader, val_loader = get_train_val_loaders(csv_path_train=csv_train, csv_path_val=csv_val, batch_size=bs, 
                                                      tg_size=tg_size, label_values=label_values, channels=channels,
-                                                     num_workers=args.num_workers, transform = transform)
+                                                     num_workers=args.num_workers, transform = transform, variation=variation)
 
     print(f'\n\n{'*'*10} Instantiating a {model_name} model - IDENTIFICATOR {model_id}')
     model = get_arch(model_name, kernels, in_c=in_c)
@@ -296,6 +297,7 @@ def get_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--experiment', type=str, default='../experiments', help='path to experiments data of validation and configs')
     parser.add_argument('--transform', type=str, default=None, help='Transform type, can be \'erosion\' or \'skeleton\'')
+    parser.add_argument('--variation', type=str, default=None, help='Skeletonization ratio variation and other preprocessing applied to the dataset')
     parser.add_argument('--model_id', type=str, default='1', help='number of the experiment')
     parser.add_argument('--seed', type=int, default=0, help='seed')
     parser.add_argument('--epochs', type=int, default=1000, help='number of epochs to train')
