@@ -41,7 +41,37 @@ def skeletization(img, target):
 
     return Image.fromarray(img_result)
 
+def contour_ratio (img, target, variation):
+    img = np.array(img)
+    target = np.array(target)
 
+    
+    # contour (by erosion)
+    erosion = ndimage.binary_erosion(target).astype(int)
+    img_cont = target - erosion
+
+    # skeleton
+    img_skel = skeletonize(target)
+
+    # dilation of skeleton 
+    struct = ndimage.generate_binary_structure(2, 1)
+    img_skel_dil = ndimage.binary_dilation(
+        img_skel, structure=struct, iterations=variation
+    ).astype(int)
+
+    # remove central region 
+    img_rem = target - img_skel_dil
+    img_rem[img_rem < 0] = 0
+
+    # keep contour on image
+    img_rem[img_cont > 0] = 1
+
+    # aply mask to image
+    img_result = np.zeros_like(img)
+    img_result[img_rem == 1] = img[img_rem == 1]
+
+    return Image.fromarray(img_result)
+    
 class TrainDataset(Dataset):
     def __init__(self, csv_path, transforms=None, label_values=None, channels='all'):
         df = pd.read_csv(csv_path)
@@ -141,10 +171,11 @@ class TestDataset(Dataset):
 
 class TrainTransforms:
 
-    def __init__(self, tg_size, transform):
+    def __init__(self, tg_size, transform, variation):
 
         self.tg_size = tg_size
         self.transform_method = transform
+        self.variation = int(variation.split('_')[-1])  # get only the number part
 
         scale = tv_transf.RandomAffine(degrees=0, scale=(0.95, 1.20))
         transl = tv_transf.RandomAffine(degrees=0, translate=(0.05, 0))
@@ -187,6 +218,8 @@ class TrainTransforms:
             img = erosion(img, target)
         if self.transform_method == "skeleton":
             img = skeletization(img, target)
+        elif self.transform_method == "contour_ratio":
+            img = contour_ratio(img, target, self.variation)
 
         img = tv_tensors.Image(img)
         target = tv_tensors.Mask(target)
@@ -259,7 +292,7 @@ class TestTransforms:
 
         return img
 
-def get_train_val_datasets(csv_path_train, csv_path_val, tg_size=(512, 512), label_values=(0, 255), channels='all', transform = None):
+def get_train_val_datasets(csv_path_train, csv_path_val, tg_size=(512, 512), label_values=(0, 255), channels='all', transform = None,  variation = None):
 
     train_dataset = TrainDataset(
         csv_path=csv_path_train, label_values=label_values, channels=channels
@@ -267,14 +300,14 @@ def get_train_val_datasets(csv_path_train, csv_path_val, tg_size=(512, 512), lab
     val_dataset = TrainDataset(
         csv_path=csv_path_val, label_values=label_values, channels=channels)
 
-    train_dataset.transforms = TrainTransforms(tg_size, transform)
+    train_dataset.transforms = TrainTransforms(tg_size, transform, variation)
     val_dataset.transforms = ValidTransforms(tg_size)
 
     return train_dataset, val_dataset
 
-def get_train_val_loaders(csv_path_train, csv_path_val, batch_size=4, tg_size=(512, 512), label_values=(0, 255), channels='all', num_workers=0, transform = None):
+def get_train_val_loaders(csv_path_train, csv_path_val, batch_size=4, tg_size=(512, 512), label_values=(0, 255), channels='all', num_workers=0, transform = None, variation = None):
     train_dataset, val_dataset = get_train_val_datasets(
-        csv_path_train, csv_path_val, tg_size=tg_size, label_values=label_values, channels=channels, transform = transform
+        csv_path_train, csv_path_val, tg_size=tg_size, label_values=label_values, channels=channels, transform = transform, variation = variation
         )
 
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, num_workers=num_workers, pin_memory=torch.cuda.is_available(), shuffle=True)
