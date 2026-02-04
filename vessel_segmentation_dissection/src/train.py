@@ -196,7 +196,6 @@ def main(arg_dict=None):
     set_seeds(seed_value, False)
 
     # gather parser parameters
-    experiment = args.experiment
     transform = args.transform
     variation = args.variation
     model_id = args.model_id
@@ -228,13 +227,8 @@ def main(arg_dict=None):
 
     do_not_save = args.do_not_save
     if do_not_save is False:
-        save_path = args.save_path
-        if save_path == 'date_time':
-            save_path = datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
-        experiment_path=osp.join(experiment, save_path)
-        args.experiment_path = experiment_path
+        experiment_path=args.save_path
         os.makedirs(experiment_path, exist_ok=True)
-
     else:
         experiment_path = None
 
@@ -272,7 +266,7 @@ def main(arg_dict=None):
     print(f"- Time to Train: {diff:.2f}")
 
     # Salva configurações do treinamento
-    experiment_path=osp.join(experiment, save_path)
+    experiment_path=args.save_path
     config = vars(args)
     config["num_parameters"] = num_p  # Adiciona o número de parâmetros
     config['time_toTrain'] = f"{diff:.2f}"
@@ -295,7 +289,6 @@ def get_parser():
     """Get parser for command line arguments."""
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--experiment', type=str, default='../experiments', help='path to experiments data of validation and configs')
     parser.add_argument('--transform', type=str, default=None, help='Transform type, can be \'erosion\' or \'skeleton\'')
     parser.add_argument('--variation', type=str, default=None, help='Skeletonization ratio variation and other preprocessing applied to the dataset')
     parser.add_argument('--model_id', type=str, default='1', help='number of the experiment')

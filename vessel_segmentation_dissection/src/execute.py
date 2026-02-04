@@ -135,7 +135,6 @@ def ciclo_treino_transform(configs:list, seed:int = 0, data="VessMAP", model="di
         # MODEL CONFIGURATION
         dic_kernel = str(config)
         name = "_wnet" if model == "wnet" else ""
-        model_id = transform_dir + name
         
         # TRAINING MODELS
         cmd = f"""
@@ -143,10 +142,9 @@ def ciclo_treino_transform(configs:list, seed:int = 0, data="VessMAP", model="di
             --csv_train {csv_train} \
             --seed {seed} \
             --save_path {base_path} \
-            --model_id {model_id} \
+            --model_id {config_id} \
             --im_size {im_size} \
             --in_c {in_c} \
-            --experiment {base_path} \
             --model_name {model} \
             --kernels "{dic_kernel}" \
             --transform "{transform}" \
