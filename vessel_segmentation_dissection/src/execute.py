@@ -123,7 +123,7 @@ def ciclo_treino_transform(configs:list, seed:int = 0, data="VessMAP", model="di
         # PATHS CONFIGURATION
         config_id = f"config_{index:03d}"
         transform_dir = "baseline" if transform is None else transform
-        variation_dir = "baseline" if transform is None else transform
+        variation_dir = "baseline" if variation is None else variation
         base_path = f"../experiments/{data}/{transform_dir}/{variation_dir}/{config_id}"
         os.makedirs(base_path, exist_ok=True)
         
