@@ -134,7 +134,6 @@ def ciclo_treino_transform(configs:list, seed:int = 0, data="VessMAP", model="di
         
         # MODEL CONFIGURATION
         dic_kernel = str(config)
-        name = "_wnet" if model == "wnet" else ""
         
         # TRAINING MODELS
         cmd = f"""

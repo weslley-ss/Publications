@@ -289,7 +289,7 @@ def get_parser():
     """Get parser for command line arguments."""
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--transform', type=str, default=None, help='Transform type, can be \'erosion\' or \'skeleton\'')
+    parser.add_argument('--transform', type=str, default=None, help='Transform type, can be \'erosion\', \'skeleton\' or \'contour_ratio\'')
     parser.add_argument('--variation', type=str, default=None, help='Skeletonization ratio variation and other preprocessing applied to the dataset')
     parser.add_argument('--model_id', type=str, default='1', help='number of the experiment')
     parser.add_argument('--seed', type=int, default=0, help='seed')
@@ -297,7 +297,7 @@ def get_parser():
     parser.add_argument('--max_lr', type=float, default=0.01, help='learning rate')
     parser.add_argument('--csv_train', type=str, default='data/DRIVE/train.csv', help='path to training data csv')
     parser.add_argument('--kernels', type=str, default='1 3 3 2 1 3 3 2 1 3 3 2 3 1 3 3 2 3 1 3 3')    
-    parser.add_argument('--model_name', type=str, default='unet', help='architecture')
+    parser.add_argument('--model_name', type=str, default='unet', help='architecture: unet, dic_unet, wnet')
     parser.add_argument('--im_size', help='image size, e.g.: 600,400', type=str, default='512')
     parser.add_argument('--batch_size', type=int, default=4, help='batch Size')
     parser.add_argument('--evaluate_every', type=int, default=50, help='number of epochs between model evaluations')
