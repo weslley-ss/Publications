@@ -271,7 +271,7 @@ def main(arg_dict=None):
     config["num_parameters"] = num_p  # Adiciona o número de parâmetros
     config['time_toTrain'] = f"{diff:.2f}"
 
-    with open(osp.join(experiment_path,f'config{seed_value}.cfg'), 'w') as f:
+    with open(osp.join(experiment_path,f'{model_id}_{seed_value}.cfg'), 'w') as f:
             json.dump(config, f, indent=2)
 
     print(f"val_auc: {best_auc}")
