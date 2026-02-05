@@ -1,4 +1,5 @@
 import os
+import os.path as osp
 import json
 
 def generate_layer_combinations(base_values, new_values, flag = "kernels"):
@@ -151,6 +152,25 @@ def ciclo_treino_transform(configs:list, seed:int = 0, data="VessMAP", model="di
             --epochs 2500
         """
         os.system(cmd)
+        
+        
+        # GENERATE PREDICTIONS
+        config_file = osp.join(base_path, f"{config_id}_{seed}.cfg")
+        result_path = osp.join(base_path, f"results_{seed}")
+        cmd = f"""
+        python generate_results.py \
+        --config_file {config_file} \
+        --dataset {data} \
+        --seed {seed} \
+        --im_size {im_size} \
+        --in_c {in_c} \
+        --result_path {result_path}"""
+        os.system(cmd)
+        
+        
+
+        
+        
 def main():
     # LAYERS CONFIGURATION
     n_layers = 10 # only convolutional layers
