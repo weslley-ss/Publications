@@ -58,7 +58,7 @@ def create_pred(model, tens, mask, coords_crop, original_sz, tta='no'):
 def save_pred(full_pred, save_results_path, im_name, seed = ""):
     os.makedirs(save_results_path, exist_ok=True)
     im_name = im_name.rsplit('/', 1)[-1]
-    file_name = f"{im_name[:-4]}_{seed}.png"
+    file_name = f"{im_name[:-5]}_{seed}.png"
     save_name = osp.join(save_results_path,file_name )
 
     with warnings.catch_warnings():
@@ -92,7 +92,7 @@ def main(args):
             raise ValueError('non-existent config file')
         with open(args.config_file, 'r') as f:
             args.__dict__.update(json.load(f))
-    experiment_path = args.experiment_path # these should exist in a config file
+    experiment_path = args.save_path # these should exist in a config file
     model_name = args.model_name
     kernels = args.kernels
     in_c = args.in_c
@@ -109,7 +109,7 @@ def main(args):
             channels = 'gray'
 
     if experiment_path is None:
-        raise ValueError('must specify path to experiment')
+        raise ValueError('must specify path save results of the experiment')
 
     im_size = tuple([int(item) for item in args.im_size.split(',')])
     if isinstance(im_size, tuple) and len(im_size)==1:
@@ -134,7 +134,7 @@ def main(args):
         sys.exit('---- bad config specification (check layers, n_classes, etc.) ---- ')
     model.eval()
 
-    save_results_path = osp.join(args.result_path, osp.basename(experiment_path))
+    save_results_path = osp.join(args.result_path)
     print('* Saving predictions to ' + save_results_path)
     times = []
     for i in tqdm(range(len(test_dataset))):
