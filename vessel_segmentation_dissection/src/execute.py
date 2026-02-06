@@ -168,6 +168,15 @@ def ciclo_treino_transform(configs:list, seed:int = 0, data="VessMAP", model="di
         os.system(cmd)
         
         
+        # ANALYZE RESULTS
+        cmd = f"""
+        python analyze_results.py \
+        --path_preds {result_path} \
+        --dataset {data} \
+        --seed {seed}"""
+        os.system(cmd)
+        
+        
 
         
         
