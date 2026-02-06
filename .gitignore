@@ -1,0 +1,10 @@
+# Ignore python cache files
+*.pyc
+
+# Ignore png files of predictions
+*.png
+
+# Ignore files until it's ready to be committed
+*.cfg
+*.pth
+*.json
