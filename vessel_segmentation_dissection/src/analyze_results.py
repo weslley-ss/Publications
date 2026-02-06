@@ -25,7 +25,7 @@ def get_labels_preds(path_to_preds, csv_path, seed = ""):
     all_gts = []
     for im_path, gt_path, mask_path in zip(im_paths, gt_paths, mask_paths):
         im_path = im_path.rsplit('/', 1)[-1]
-        file_name = f"{im_path[:-4]}_{seed}.png"
+        file_name = f"{im_path[:-5]}_{seed}.png"
         pred_path = osp.join(path_to_preds, file_name)
 
         gt = np.array(Image.open(osp.join(root,gt_path))).astype(bool)
@@ -217,10 +217,7 @@ def main(args):
     perf_all["train"] = perf_df_train
     perf_all["validation"] = perf_df_validation
     perf_all["test"] = perf_df_test
-    #perf_all["test2"] = perf_df_test2
-    save_all_path = save_path.replace("results", "experiments")
-    save_all_path = save_all_path.replace("perf", "")
-    with open(osp.join(save_all_path, f'all_performance{seed_value}.json'), 'w') as arquivo:
+    with open(osp.join(save_path, f'all_performance{seed_value}.json'), 'w') as arquivo:
         json.dump(perf_all, arquivo, indent=4)
 
 
