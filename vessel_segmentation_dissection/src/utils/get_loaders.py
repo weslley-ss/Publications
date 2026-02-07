@@ -218,7 +218,7 @@ class TrainTransforms:
             img = erosion(img, target)
         if self.transform_method == "skeleton":
             img = skeletization(img, target)
-        elif self.transform_method == "contour_ratio":
+        if self.transform_method == "contour_ratio":
             variation = int(self.variation.split('_')[-1])  # get only the number part
             img = contour_ratio(img, target, variation)
 
