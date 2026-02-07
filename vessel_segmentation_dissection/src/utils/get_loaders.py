@@ -175,7 +175,7 @@ class TrainTransforms:
 
         self.tg_size = tg_size
         self.transform_method = transform
-        self.variation = int(variation.split('_')[-1])  # get only the number part
+        self.variation = variation
 
         scale = tv_transf.RandomAffine(degrees=0, scale=(0.95, 1.20))
         transl = tv_transf.RandomAffine(degrees=0, translate=(0.05, 0))
@@ -219,7 +219,8 @@ class TrainTransforms:
         if self.transform_method == "skeleton":
             img = skeletization(img, target)
         elif self.transform_method == "contour_ratio":
-            img = contour_ratio(img, target, self.variation)
+            variation = int(self.variation.split('_')[-1])  # get only the number part
+            img = contour_ratio(img, target, variation)
 
         img = tv_tensors.Image(img)
         target = tv_tensors.Mask(target)
