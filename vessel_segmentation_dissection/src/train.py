@@ -281,7 +281,7 @@ def main(arg_dict=None):
         
         dic = {"Best_AUC":f"{100*best_auc:.2f}","Best_DICE":f"{100*best_dice:.2f}","Best_epoch":f"{best_epoch}", "params": num_p }
 
-        with open(osp.join(experiment_path,f'val_metrics_{model_id}_{seed_value}.json'), 'w') as arquivo:
+        with open(osp.join(experiment_path,f'model_validation_metrics_{model_id}_{seed_value}.json'), 'w') as arquivo:
             json.dump(dic, arquivo, indent=4)
         
 
