@@ -88,8 +88,8 @@ def main():
     configs = np.arange(0, 180, dtype=int)
     data_set = "DRIVE"
     
-    base_old = Path("/home/weslley/Documentos/Experimentos-baseline/vessel_baseline/experiments_DRIVE")
-    base_new = Path("/home/weslley/Documentos/Publications/vessel_segmentation_dissection/experiments/DRIVE/baseline/baseline")
+    base_old = Path(f"/home/weslley/Documentos/Experimentos-baseline/vessel_baseline/experiments_{data_set}")
+    base_new = Path(f"/home/weslley/Documentos/Publications/vessel_segmentation_dissection/experiments/{data_set}/baseline/baseline")
     
     for seed in [2, 4, 8]: 
         for index in configs:
