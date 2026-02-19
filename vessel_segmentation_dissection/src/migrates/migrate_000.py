@@ -85,7 +85,7 @@ def delete_old_file(path: Path, identificador=None):
 def main():
     print("MIGRATE 000: RESTORE CONFIGURATION, MODELS AND METRICS FILES")
     
-    configs = np.arange(0, 180, dtype=int)
+    configs = np.arange(0, 181, dtype=int)
     data_set = "DRIVE"
     
     base_old = Path(f"/home/weslley/Documentos/Experimentos-baseline/vessel_baseline/experiments_{data_set}")
