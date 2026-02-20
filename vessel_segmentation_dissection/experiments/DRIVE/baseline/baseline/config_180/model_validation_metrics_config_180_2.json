@@ -1,0 +1,6 @@
+{
+    "Best_AUC": "98.26",
+    "Best_DICE": "79.80",
+    "Best_epoch": "1000",
+    "params": 32281
+}
