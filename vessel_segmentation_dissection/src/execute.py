@@ -192,9 +192,8 @@ def main():
     base_res = [1]*5 
     res_vals = [3]
 
-    standard_config = [((3, 3, 3, 3, 3, 3, 3, 3, 3, 3), (1, 1, 1, 1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (2, 2))]
+    standard_config = [[(3, 3, 3, 3, 3, 3, 3, 3, 3, 3), (1, 1, 1, 1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (2, 2)]]
     configs = generate_models_configurations(base_k, base_dil, base_res, k_vals, dil_vals, res_vals, return_base = False)
-    configs = standard_config + configs
 
     for seed in [2,4,8]:
         ciclo_treino_transform(configs, seed=seed, data="VessMAP", model="dic_unet")
