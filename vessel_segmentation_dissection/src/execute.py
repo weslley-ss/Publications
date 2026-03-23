@@ -123,9 +123,9 @@ def ciclo_treino_transform(configs:list, seed:int = 0, data="VessMAP", model="di
     for index, config in enumerate(configs):
         # PATHS CONFIGURATION
         config_id = f"config_{index:03d}"
-        transform_dir = "baseline" if transform is None else transform
-        variation_dir = "baseline" if variation is None else variation
-        base_path = f"../experiments/{data}/{transform_dir}/{variation_dir}/{config_id}"
+        transform_dir = "baseline_transform" if transform is None else transform
+        variation_dir = "baseline_variation" if variation is None else variation
+        base_path = f"../experiments/{data}/{transform_dir}/{model}/{variation_dir}/{config_id}"
         os.makedirs(base_path, exist_ok=True)
         
         # DATASET CONFIGURATION
@@ -197,9 +197,11 @@ def main():
 
     for seed in [2,4,8]:
         ciclo_treino_transform(configs, seed=seed, data="VessMAP", model="dic_unet")
-        #ciclo_treino_transform(configs, seed=seed, data="DRIVE", model="dic_unet")
-        #ciclo_treino_transform(standard_config, seed=2, data="VessMAP", model="dic_unet", transform="erosion")
-        #ciclo_treino_transform(standard_config, seed=2, data="VessMAP", model="dic_unet", transform="skeleton")
+        ciclo_treino_transform(configs, seed=seed, data="DRIVE", model="dic_unet")
+        ciclo_treino_transform(standard_config, seed=seed, data="VessMAP", model="dic_unet", transform="erosion")
+        ciclo_treino_transform(standard_config, seed=seed, data="VessMAP", model="wnet", transform="erosion")
+        ciclo_treino_transform(standard_config, seed=seed, data="VessMAP", model="dic_unet", transform="skeleton")
+        ciclo_treino_transform(standard_config, seed=seed, data="VessMAP", model="wnet", transform="skeleton")
 
 
 main()
